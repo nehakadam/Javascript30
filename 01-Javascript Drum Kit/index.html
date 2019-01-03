@@ -12,49 +12,51 @@
 	<body>
 
 
+		<h2>Press Keys on Your Keyboard</h2>
+
 		<div class="keys">
 
-			<div data-keys="65" class="key">
+			<div data-key="65" class="key">
 				<kbd>A</kbd>
 				<span class="sound">clap</span>
 			</div>
 
-			<div data-keys="83" class="key">
+			<div data-key="83" class="key">
 				<kbd>S</kbd>
-				<span class="sound">hitat</span>
+				<span class="sound">hihat</span>
 			</div>
 
-			<div data-keys="68" class="key">
+			<div data-key="68" class="key">
 				<kbd>D</kbd>
-				<span class="sound">cick</span>
+				<span class="sound">kick</span>
 			</div>
 
-			<div data-keys="70" class="key">
+			<div data-key="70" class="key">
 				<kbd>F</kbd>
 				<span class="sound">openhat</span>
 			</div>
 
-			<div data-keys="71" class="key">
+			<div data-key="71" class="key">
 				<kbd>G</kbd>
 				<span class="sound">boom</span>
 			</div>
 
-			<div data-keys="72" class="key">
+			<div data-key="72" class="key">
 				<kbd>H</kbd>
 				<span class="sound">ride</span>
 			</div>
 
-			<div data-keys="74" class="key">
+			<div data-key="74" class="key">
 				<kbd>J</kbd>
 				<span class="sound">snare</span>
 			</div>
 
-			<div data-keys="75" class="key">
+			<div data-key="75" class="key">
 				<kbd>K</kbd>
 				<span class="sound">tom</span>
 			</div>
 
-			<div data-keys="76" class="key">
+			<div data-key="76" class="key">
 				<kbd>L</kbd>
 				<span class="sound">tink</span>
 			</div>
@@ -62,15 +64,63 @@
 		</div>
 
 
-		<audio data-key="65" src="/sounds/clap.wav"></audio>
-		<audio data-key="83" src="/sounds/hitat.wav"></audio>
-		<audio data-key="68" src="/sounds/cick.wav"></audio>
-		<audio data-key="70" src="/sounds/openhat.wav"></audio>
-		<audio data-key="71" src="/sounds/boom.wav"></audio>
-		<audio data-key="72" src="/sounds/ride.wav"></audio>
-		<audio data-key="74" src="/sounds/snare.wav"></audio>
-		<audio data-key="75" src="/sounds/tom.wav"></audio>
-		<audio data-key="76" src="/sounds/tink.wav"></audio>
+		<audio data-key="65" src="sounds/clap.wav"></audio>
+		<audio data-key="83" src="sounds/hihat.wav"></audio>
+		<audio data-key="68" src="sounds/kick.wav"></audio>
+		<audio data-key="70" src="sounds/openhat.wav"></audio>
+		<audio data-key="71" src="sounds/boom.wav"></audio>
+		<audio data-key="72" src="sounds/ride.wav"></audio>
+		<audio data-key="74" src="sounds/snare.wav"></audio>
+		<audio data-key="75" src="sounds/tom.wav"></audio>
+		<audio data-key="76" src="sounds/tink.wav"></audio>
+
+
+
+		<script type="text/javascript">
+			
+			function playSound(e) {
+
+				// Get audio element with data-key value equal to the code of key pressed
+				const audio = document.querySelector(`audio[data-key="${e.keyCode}"]`);
+				// Get div element with data-key equal to the code of key pressed
+				const key = document.querySelector(`div[data-key="${e.keyCode}"]`);
+
+				// Exit function execution if audio element is null or empty. This will be triggered when key is pressed is other than the keys we are using in this example. 
+				if(!audio)
+					return;
+
+				// Add playing class to the key element for animations
+				key.classList.add('playing');
+
+				// Rewind the audio when it is played multiple times
+				audio.currentTime = 0;
+
+				audio.play();
+			}
+
+			function removeTransition(e) {
+
+				// Return if transform property is not found on element. 
+				// This is used to find whether the element has been animated or not  
+				// Here we can also check it using a condition : whether 'playing' class was added to the element
+				if(e.propertyName !== 'transform')
+					return;
+
+				e.target.classList.remove('playing');
+
+			}
+
+
+			// Get an array of elements having class "key"
+			// Add event listener on transitionend event of DOM to get keys back to their original style
+			const keys = Array.from(document.querySelectorAll('.key'));
+			keys.forEach(key => document.addEventListener('transitionend', removeTransition));
+
+
+			// Play sound and highlight the keyboard key pressed
+			window.addEventListener('keydown', playSound);
+
+		</script>
 
 
 	</body>
