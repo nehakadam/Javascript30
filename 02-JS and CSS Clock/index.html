@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+	<head>
+		<title>JS & CSS Clock</title>
+		<link rel="stylesheet" type="text/css" href="style.css">
+	</head>
+
+
+	<body>
+		
+		<div class="clock-frame">
+			<div class="clock-hand hour-hand"></div>
+			<div class="clock-hand min-hand"></div>
+			<div class="clock-hand sec-hand"></div>
+		</div>
+
+		<script type="text/javascript">
+			
+			function setTimeInClock() {
+
+				const hourHand = document.querySelector('.hour-hand');
+				const minHand = document.querySelector('.min-hand');
+				const secHand = document.querySelector('.sec-hand');
+
+				const timenow = new Date();
+
+				const sec = timenow.getSeconds();
+				const secDeg = (( sec / 60 ) * 360) + 90;
+				secHand.style.transform = `rotate(${secDeg}deg)`;
+
+				const min = timenow.getMinutes();
+				const minDeg = (( min / 60 ) * 360) + 90;
+				minHand.style.transform = `rotate(${minDeg}deg)`;
+
+				const hour = timenow.getHours();
+				const hourDeg = (( hour / 12 ) * 360) + 90;
+				hourHand.style.transform = `rotate(${hourDeg}deg)`;
+
+			}
+
+
+			setInterval(setTimeInClock, 1000);
+			setTimeInClock();
+
+		</script>
+
+	</body>
+
+</html>
