@@ -1,0 +1,39 @@
+:root {
+  --background: #DFF5FC;
+  --base: #4E3A39;
+  --spacing: 10px;
+  --blur: 10px;
+}
+
+img {
+  padding: var(--spacing);
+  background: var(--base);
+  filter: blur(var(--blur));
+}
+
+.hl {
+  color: var(--base);
+}
+
+body {
+
+  background: var(--background);
+
+  text-align: center;
+  color: #000000;
+  font-family: sans-serif;
+  font-weight: 100;
+  font-size: 18px;
+}
+
+.controls {
+  margin-bottom: 50px;
+}
+
+.controls label {
+  margin-left: 50px;
+}
+
+input {
+  width: 100px;
+}
