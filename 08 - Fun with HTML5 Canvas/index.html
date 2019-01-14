@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+
+<html>
+
+	<head>
+		
+		<title>HTML5 Canvas </title>
+
+	</head>
+
+	<body>
+		
+		<canvas></canvas>
+
+
+		<script type="text/javascript">
+
+			function setupDrawingContext() {
+			
+				const	canvas = document.querySelector("canvas");
+				
+				if(!canvas.getContext) {
+					console.log("HTML5 canvas is not supported on this browser");
+					return;
+				}
+
+				// Set Width & Height of canvas
+				canvas.width = window.innerWidth;
+				canvas.height = window.innerHeight;
+					
+				const	ctx = canvas.getContext("2d");
+
+				let isDrawing = false;
+				let lastX = 0;
+				let lastY = 0;
+				let hue = 0;
+				let direction = true;
+
+
+				// Set stroke Style
+				ctx.strokeWidth = 25;
+				ctx.strokeStyle = "#BADA55";
+				ctx.lineWidth = 1;
+
+				ctx.lineCap = "round";
+
+
+				canvas.addEventListener("mousedown", (e) => {
+					
+					// Set isDrawing variable to indicate drawing is started
+					isDrawing = true;
+
+					// Set start postions for drawing
+					[lastX, lastY] = [e.offsetX, e.offsetY];
+				});
+
+				canvas.addEventListener("mousemove", (e) => {
+
+					// if not drawing then stop function execution
+					if(!isDrawing)
+						return;
+
+					ctx.strokeStyle = `hsl(${hue}, 100%, 50%)`;
+
+					// Start a new path by emptying all previous sub paths
+					ctx.beginPath();
+
+					// Begins new sub-path at the point (x,y)
+					ctx.moveTo(lastX, lastY);
+
+					// Adds straight line to a current sub-path by adding straight line from start of sub-path to point specified in the lineTo method.
+					ctx.lineTo(e.offsetX, e.offsetY);
+
+					// Strokes the current or given stroke path with specified stroke style
+					ctx.stroke();
+
+					// Change lastX and lastY values to the end point of the sub-path. 
+					// this makes the continuous drawing possible
+					[lastX, lastY] = [e.offsetX, e.offsetY];
+
+					// Chnage color while drawing
+					hue++;
+					if(hue > 360) {
+						hue = 0;
+					}
+
+					// Change stroke width while drawing
+					if(ctx.lineWidth >= 25 || ctx.lineWidth <= 1) {
+						direction = !direction;
+					}
+
+					if(direction) {
+						ctx.lineWidth++;
+					}
+					else {
+						ctx.lineWidth--;
+					}
+
+				});
+
+				canvas.addEventListener("mouseup", () => isDrawing=false);
+				canvas.addEventListener("mouseup", () => isDrawing=false);
+			}
+
+
+			setupDrawingContext();
+		</script>
+
+	</body>
+
+</html>
