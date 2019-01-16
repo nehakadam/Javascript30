@@ -115,76 +115,43 @@
       const checkboxes = document.querySelectorAll('input[type="checkbox"]');
       console.log(checkboxes);
 
-      let checkedOne = false;
-      let checkedIndex = undefined;
-      let shiftClicked = false;
+      let lastChecked;
 
-      document.addEventListener("keydown", (e) => {
-        if(e.keyCode === 16) {
-          shiftClicked = true;
-        }
-      });
+      checkboxes.forEach( checkbox => {
 
-      document.addEventListener("keyup", (e) => {
-        if(e.keyCode === 16) {
-          shiftClicked = false;
-        }
-      });
+        checkbox.addEventListener( "click", function(e) {
 
-      checkboxes.forEach((checkbox, index) => {
+          let inBetween = false;
 
-        checkbox.addEventListener("click", function(e) {
-        
-          console.log(e);
-          console.log(`e.srcElement.checked : ${e.srcElement.checked}`);
+          // Conditions : 
+          // 1. shift key is pressed
+          // 2. Checkbox is checked
+          if( e.shiftKey && this.checked && lastChecked ) {
 
-          if(e.srcElement.checked) {
+            checkboxes.forEach( checkbox => {
 
-            if(!checkedOne) {
-  
-                checkedOne = true;
-                console.log(`Checked First ${index}`);
-    
-                checkedIndex = index;
-            }
-            else {
-            
-              if(shiftClicked) {
-
-                console.log(`Checked Second ${index}`);
-    
-                let startIndex, endIndex;
-                if(checkedIndex > index) {
-                  [startIndex, endIndex] = [index + 1, checkedIndex - 1];
-                }
-                else {
-                  [startIndex, endIndex] = [checkedIndex + 1, index - 1];
-                }
-                console.log(startIndex);
-                console.log(endIndex);
-    
-                for(let i = startIndex; i <= endIndex; i++)
-                {
-                  checkboxes[i].checked = true;
-                }
-
-                checkedOne = false;
-                checkedIndex = undefined;
-
+              // Set value of 'inBetween' by comparing current element in the loop against currently checked element or previous checked element
+              if( checkbox === this || checkbox === lastChecked ) {
+                inBetween = !inBetween;
               }
-            }
+
+              if( inBetween ) {
+                checkbox.checked = true;
+              }
+
+            });
+
+          }
+
+          if( this.checked ) {
+            lastChecked = this;
           }
           else {
-
-            if(checkedOne) {
-              checkedOne = false;
-              checkedIndex = undefined;
-            }
-          
+            lastChecked = undefined;
           }
         
         });
-        
+
       })
 
     </script>
